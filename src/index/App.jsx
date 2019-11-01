@@ -40,23 +40,23 @@ function App(props) {
         return bindActionCreators({
             exchangeFromTo,
             showCitySelector,
-        }, dispatch)
+        }, dispatch);
     }, []);
 
     return (
         <div>
             <div className='header-wrapper'>
-                <Header title='火车票' onBack={onBack}/>
+                <Header title='火车票' onBack={onBack} />
             </div>
 
             <form>
-                <Journey from={from} to={to} {...callbackCollection}/>
+                <Journey from={from} to={to}  {...callbackCollection}/>
                 <DepartDate/>
                 <HighSpeed/>
                 <Submit/>
             </form>
 
-            <CitySelector show={isSelectorVisible} cityData={cityData} isLoading={isLoadingCityData}/>
+            <CitySelector show={isSelectorVisible} cityData={cityData} isLoading={isLoadingCityData} />
 
         </div>
     )

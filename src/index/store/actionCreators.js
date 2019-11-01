@@ -40,7 +40,7 @@ export function toggleHighSpeed() {
 }
 
 //显示城市选择器
-export function showCitySelector(currentSelectingCity) {
+export function showCitySelector(currentSelectingLeftCity) {
     return (dispatch) => {
         dispatch({
             type: ACTION_SET_IS_CITY_SELECTOR_VISIBLE,
@@ -48,9 +48,9 @@ export function showCitySelector(currentSelectingCity) {
         });
         dispatch({
             type: ACTION_SET_CURRENT_SELECTING_LEFT_CITY,
-            payload: currentSelectingCity
-        })
-    }
+            payload: currentSelectingLeftCity,
+        });
+    };
 }
 
 //隐藏城市选择器
