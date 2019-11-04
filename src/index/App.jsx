@@ -3,6 +3,8 @@ import {bindActionCreators} from "redux"; //将actionCreators与dispatch绑定�
 import {connect} from 'react-redux';
 import './App.css';
 
+import {h0} from '../common/fp';
+
 //导入index首页 需要的组件
 import Header from '../common/Header/Header';
 import DepartDate from "./component/DepartDate/DepartDate";
@@ -10,14 +12,18 @@ import Journey from "./component/Journey/Journey";
 import HighSpeed from "./component/HighSpeed/HighSpeed";
 import Submit from "./component/Submit/Submit";
 import CitySelector from "../common/CitySelector/CitySelector.jsx";
+import DateSelector from "../common/DateSelector/DateSelector";
 
 // 导入action
-import {
+import {//返回值是回调函数 ，直接调用数据传不到reducer，应将返回值dispatch（可优化 thunk）
     exchangeFromTo,
-    showCitySelector, //该两函数返回值是回调函数 ，直接调用数据传不到reducer，应将返回值dispatch（可优化 thunk）
+    showCitySelector,
     hideCitySelector,
+    setSelectedCity,
     fetchCityData,
-    setSelectedCity, showDateSelector,
+    showDateSelector,
+    hideDateSelector,
+    setDepartDate,
 } from './store/actionCreators'
 
 
@@ -26,10 +32,12 @@ function App(props) {
         from,
         to,
         isCitySelectorVisible,
+        isDateSelectorVisible,
         cityData,
         isLoadingCityData,
-        dispatch,
         departDate,
+        dispatch,
+
     } = props;
 
     //封装： 因window.history会持续变化， 避免子组件过度渲染
@@ -37,7 +45,7 @@ function App(props) {
         window.history.back();
     }, []); //每次重渲染，onBack都是同一个句柄，如需变化，[]输入依赖变量即可. 此操作避免了header不必要的重渲染
 
-    //封装： 绑定传入journey组件的action和dispatch
+    //封装： 绑定传入Journey组件的action和dispatch
     const journeyCbs = useMemo(() => {
         return bindActionCreators({
             exchangeFromTo,
@@ -45,7 +53,7 @@ function App(props) {
         }, dispatch);
     }, []);
 
-    //封装： 绑定传入citySelector组件的action和dispatch
+    //封装： 绑定传入CitySelector组件的action和dispatch
     const citySelectorCbs = useMemo(() => {
         return bindActionCreators({
             onBack: hideCitySelector,
@@ -54,16 +62,47 @@ function App(props) {
         }, dispatch)
     }, []);
 
+    //封装： 绑定传入DepartDateCbs组件的action和dispatch
+    const departDateCbs = useMemo(() => {
+        return bindActionCreators({
+            onClick: showDateSelector,
+        }, dispatch)
+    }, []);
+
+    //封装： 绑定传入DateSelector组件的action和dispatch
+    const dateSelectorCbs = useMemo(() => {
+        return bindActionCreators({
+            onBack: hideDateSelector,
+        }, dispatch)
+    }, []);
+
+    //封装： 选择日期的函数
+    const onSelectDate = useCallback((day) => {
+        if (!day) {
+            return;
+        }
+        if (day < h0()) {
+            return;
+        }
+        dispatch(setDepartDate(day));
+        dispatch(hideDateSelector());
+    }, []);
+
 
     return (
         <div>
             <div className='header-wrapper'>
-                <Header title='火车票' onBack={onBack} />
+                <Header title='火车票' onBack={onBack}/>
             </div>
 
             <form className='form'>
-                <Journey from={from} to={to} {...journeyCbs}/>
-                <DepartDate time={departDate} onClick={showDateSelector()}/>
+                <Journey from={from}
+                         to={to}
+                         {...journeyCbs}
+                />
+                <DepartDate time={departDate}
+                            {...departDateCbs}
+                />
                 <HighSpeed/>
                 <Submit/>
             </form>
@@ -73,6 +112,12 @@ function App(props) {
                           isLoading={isLoadingCityData}
                           {...citySelectorCbs}
             />
+
+            <DateSelector show={isDateSelectorVisible}
+                          {...dateSelectorCbs}
+                          onSelect={onSelectDate}
+            />
+
         </div>
     )
 }
