@@ -1,4 +1,4 @@
-// 去除(置0)传入时间戳的 小时分钟秒
+// 制作： 当前日期的零时刻
 export function h0(timestamp = Date.now()) {
     const target = new Date(timestamp);
 
@@ -7,5 +7,5 @@ export function h0(timestamp = Date.now()) {
     target.setSeconds(0);
     target.setMilliseconds(0);
 
-    return target.getTime;
+    return target.getTime();
 }

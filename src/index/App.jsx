@@ -24,6 +24,7 @@ import {//返回值是回调函数 ，直接调用数据传不到reducer，应�
     showDateSelector,
     hideDateSelector,
     setDepartDate,
+    toggleHighSpeed,
 } from './store/actionCreators'
 
 
@@ -36,6 +37,7 @@ function App(props) {
         cityData,
         isLoadingCityData,
         departDate,
+        highSpeed,
         dispatch,
 
     } = props;
@@ -88,6 +90,13 @@ function App(props) {
         dispatch(hideDateSelector());
     }, []);
 
+    //封装： 传入highSpeed组件的action和dispatch
+    const highSpeedCbs = useMemo(() => {
+        return bindActionCreators({
+            toggle: toggleHighSpeed,
+        }, dispatch)
+    }, []);
+
 
     return (
         <div>
@@ -95,7 +104,7 @@ function App(props) {
                 <Header title='火车票' onBack={onBack}/>
             </div>
 
-            <form className='form'>
+            <form action='./query.html' className='form'>
                 <Journey from={from}
                          to={to}
                          {...journeyCbs}
@@ -103,7 +112,8 @@ function App(props) {
                 <DepartDate time={departDate}
                             {...departDateCbs}
                 />
-                <HighSpeed/>
+                <HighSpeed highSpeed={highSpeed}
+                           {...highSpeedCbs}/>
                 <Submit/>
             </form>
 
@@ -114,8 +124,8 @@ function App(props) {
             />
 
             <DateSelector show={isDateSelectorVisible}
-                          {...dateSelectorCbs}
                           onSelect={onSelectDate}
+                          {...dateSelectorCbs}
             />
 
         </div>

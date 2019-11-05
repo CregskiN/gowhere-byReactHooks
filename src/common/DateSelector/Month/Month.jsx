@@ -1,31 +1,33 @@
 import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+
 import {h0} from '../../fp';
 
+//最小粒度： 日组件
 const Day = function Day(props) {
     const {
         day,
         onSelect,
     } = props;
 
-    if (!day) {
+    if (!day) { // 制作的日期数组，有空
         return <td className='null'></td>
     }
 
     const classes = [];
 
-    const now = h0();
+    const now = h0(); //获取： 当天的零时刻
 
-    if (day < now) {
+    if (day < now) { // 判断： day是不是过去的日期
         classes.push('disabled');
     }
 
-    if ([6, 0].includes(new Date(day).getDay())) {
+    if ([6, 0].includes(new Date(day).getDay())) { // 判断： 是不是周六日
         classes.push('weekend');
     }
 
-    const dateString = now === day ? '今天' : new Date(day).getDate();
+    const dateString = now === day ? '今天' : new Date(day).getDate(); //判断： 是不是今天
 
     return (
         <td className={classnames(classes)} onClick={() => onSelect(day)}>
@@ -39,7 +41,7 @@ Day.propTypes = {
     onSelect: PropTypes.func.isRequired,
 };
 
-
+// 周组件
 const Week = function Week(props) {
     const {
         days,
@@ -51,7 +53,10 @@ const Week = function Week(props) {
             {
                 days.map((item, index) => {
                     return (
-                        <Day key={index} day={item} onSelect={onSelect}/>
+                        <Day key={index}
+                             day={item}
+                             onSelect={onSelect}
+                        />
                     )
                 })
             }
@@ -64,14 +69,14 @@ Week.propTypes = {
     onSelect: PropTypes.func.isRequired,
 };
 
-
+// 月组件
 const Month = memo(function DateBoard(props) {
     const {
         startDayTimeInMonth,
         onSelect,
     } = props;
 
-    //制作： 月份板块 数据
+    //制作： 月份板块 数据数组
     const startDay = new Date(startDayTimeInMonth);
     const currentDay = new Date(startDayTimeInMonth);
 
@@ -93,7 +98,6 @@ const Month = memo(function DateBoard(props) {
         const week = days.slice(row * 7, (row + 1) * 7);
         weeks.push(week);
     }
-
 
     return (
         <table className='date-table'>
@@ -118,7 +122,10 @@ const Month = memo(function DateBoard(props) {
                 </tr>
                 {
                     weeks.map((item, index) => {
-                        return <Week key={index} days={item} onSelect={onSelect}/>
+                        return <Week key={index}
+                                     days={item}
+                                     onSelect={onSelect}
+                        />
                     })
                 }
             </tbody>

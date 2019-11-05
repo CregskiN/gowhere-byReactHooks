@@ -39,7 +39,10 @@ const DateSelector = memo(function DateSelector(props) {
                 {
                     monthSequence.map((item, index) => {
                         return (
-                            <Month key={index} startDayTimeInMonth={item} onSelect={onSelect}/>
+                            <Month key={index}
+                                   onSelect={onSelect}
+                                   startDayTimeInMonth={item}
+                            />
                         )
                     })
                 }
