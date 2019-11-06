@@ -33,9 +33,7 @@ function DepartDate(props) {
         (isToday ? '(今天)' : '');
 
     // eslint-disable-next-line no-console
-    console.log(departDateString);
-    // eslint-disable-next-line no-console
-    console.log(weekString);
+    console.log('DepartDate组件被渲染了');
 
     return (
         <div className='depart-date' onClick={onClick}>
