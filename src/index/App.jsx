@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { bindActionCreators } from 'redux'; //将actionCreators与dispatch绑定在一起
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+
 import './App.css';
 
 import { h0 } from '../common/fp';
@@ -29,7 +30,7 @@ import {
 } from './store/actionCreators';
 
 function App() {
-    const state = useSelector(state => state, shallowEqual);
+    const state = useSelector(state => state, shallowEqual());
     const dispatch = useDispatch();
     const {
         from,

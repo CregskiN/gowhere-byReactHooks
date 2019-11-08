@@ -45,7 +45,7 @@ const _from = (state, action) => {
     return newState;
 };
 
-const _to = (state = '上海', action) => {
+const _to = (state, action) => {
     const { payload } = action;
     const newState = state;
     newState.to = payload;
@@ -93,6 +93,7 @@ const _highSpeed = (state, action) => {
     newState.highSpeed = payload;
     return newState;
 };
+
 const _departDate = (state, action) => {
     const { payload } = action;
     const newState = state;
