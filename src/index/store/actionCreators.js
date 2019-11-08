@@ -1,63 +1,55 @@
-export const ACTION_SET_FROM = 'SET_FROM';
-export const ACTION_SET_TO = 'SET_TO';
-export const ACTION_SET_IS_CITY_SELECTOR_VISIBLE = 'SET_IS_CITY_SELECTOR_VISIBLE';
-export const ACTION_SET_CURRENT_SELECTING_LEFT_CITY = 'SET_CURRENT_SELECTING_LEFT_CITY';
-export const ACTION_SET_CITY_DATA = 'SET_CITY_DATA';
-export const ACTION_SET_IS_LOADING_CITY_DATA = 'SET_IS_LOADING_CITY_DATA';
-export const ACTION_SET_IS_DATE_SELECTOR_VISIBLE = 'SET_IS_DATE_SELECTOR_VISIBLE';
-export const ACTION_SET_HIGH_SPEED = 'SET_HIGH_SPEED';
-export const ACTION_SET_DEPART_DATE = 'SET_DEPART_DATE';
+import * as actionTypes from './actionTypes';
 
 export function setFrom(from) {
     return {
-        type: ACTION_SET_FROM,
+        type: actionTypes.ACTION_SET_FROM,
         payload: from,
     };
 }
 
 export function setTo(to) {
     return {
-        type: ACTION_SET_TO,
+        type: actionTypes.ACTION_SET_TO,
         payload: to,
-    }
+    };
 }
 
 export function setIsLoadingCityData(isLoadingCityData) {
     return {
-        type: ACTION_SET_IS_LOADING_CITY_DATA,
+        type: actionTypes.ACTION_SET_IS_LOADING_CITY_DATA,
         payload: isLoadingCityData,
-    }
+    };
 }
 
 // 接收城市信息并存储
 export function setCityData(cityData) {
     return {
-        type: ACTION_SET_CITY_DATA,
+        type: actionTypes.ACTION_SET_CITY_DATA,
         payload: cityData,
-    }
+    };
 }
 
-
 export function toggleHighSpeed() {
-    return (dispatch, getState) => { //异步函数
-        const {highSpeed} = getState();
+    return (dispatch, getState) => {
+        //异步函数
+        const { highSpeed } = getState();
         dispatch({
-            type: ACTION_SET_HIGH_SPEED,
+            type: actionTypes.ACTION_SET_HIGH_SPEED,
             payload: !highSpeed,
-        })
-    }
+        });
+    };
 }
 
 // 显示城市选择器
 export function showCitySelector(currentSelectingLeftCity) {
-    return (dispatch) => {
+    return dispatch => {
         dispatch({
-            type: ACTION_SET_IS_CITY_SELECTOR_VISIBLE,
+            type: actionTypes.ACTION_SET_IS_CITY_SELECTOR_VISIBLE,
             payload: true,
         });
 
         dispatch({
-            type: ACTION_SET_CURRENT_SELECTING_LEFT_CITY,
+            type: actionTypes.ACTION_SET_CURRENT_SELECTING_LEFT_CITY,
             payload: currentSelectingLeftCity,
         });
     };
@@ -66,7 +58,7 @@ export function showCitySelector(currentSelectingLeftCity) {
 // 隐藏城市选择器
 export function hideCitySelector() {
     return {
-        type: ACTION_SET_IS_CITY_SELECTOR_VISIBLE,
+        type: actionTypes.ACTION_SET_IS_CITY_SELECTOR_VISIBLE,
         payload: false,
     };
 }
@@ -74,7 +66,7 @@ export function hideCitySelector() {
 // 城市选择器中点击事件
 export function setSelectedCity(city) {
     return (dispatch, getState) => {
-        const {currentSelectingLeftCity} = getState();
+        const { currentSelectingLeftCity } = getState();
 
         if (currentSelectingLeftCity) {
             dispatch(setFrom(city));
@@ -89,7 +81,7 @@ export function setSelectedCity(city) {
 // 显示日期选择器
 export function showDateSelector() {
     return {
-        type: ACTION_SET_IS_DATE_SELECTOR_VISIBLE,
+        type: actionTypes.ACTION_SET_IS_DATE_SELECTOR_VISIBLE,
         payload: true,
     };
 }
@@ -97,7 +89,7 @@ export function showDateSelector() {
 // 隐藏日期选择器
 export function hideDateSelector() {
     return {
-        type: ACTION_SET_IS_DATE_SELECTOR_VISIBLE,
+        type: actionTypes.ACTION_SET_IS_DATE_SELECTOR_VISIBLE,
         payload: false,
     };
 }
@@ -105,7 +97,7 @@ export function hideDateSelector() {
 // 交换出发站目的站
 export function exchangeFromTo() {
     return (dispatch, getState) => {
-        const {from, to} = getState();
+        const { from, to } = getState();
         dispatch(setFrom(to));
         dispatch(setTo(from));
     };
@@ -114,22 +106,23 @@ export function exchangeFromTo() {
 // 选择日期的点击事件
 export function setDepartDate(departDate) {
     return {
-        type: ACTION_SET_DEPART_DATE,
+        type: actionTypes.ACTION_SET_DEPART_DATE,
         payload: departDate,
     };
 }
 
-
 //获得城市列表 异步
 export function fetchCityData() {
     return (dispatch, getState) => {
-        const {isLoadingCityData} = getState();
+        const { isLoadingCityData } = getState();
 
         if (isLoadingCityData) {
             return;
         }
 
-        const cache = JSON.parse(localStorage.getItem('city_data_cache') || '{}');
+        const cache = JSON.parse(
+            localStorage.getItem('city_data_cache') || '{}'
+        );
 
         if (Date.now() < cache.expires) {
             dispatch(setCityData(cache.data));
@@ -155,10 +148,6 @@ export function fetchCityData() {
             })
             .catch(() => {
                 dispatch(setIsLoadingCityData(false));
-            })
-    }
+            });
+    };
 }
-
-
-
-
