@@ -21,6 +21,7 @@ import {
     ACTION_SET_IS_FILTERS_VISIBLE,
     ACTION_SET_SEARCH_PARSED,
 } from './actionCreators';
+
 import { ORDER_DEPART } from '../constant';
 
 export default {
